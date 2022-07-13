@@ -6,7 +6,7 @@ import { cpp } from '@codemirror/lang-cpp';
 import { python } from '@codemirror/lang-python';
 import { java } from '@codemirror/lang-java';
 import { sublime } from '@uiw/codemirror-theme-sublime';
-import { useEffect, useRef, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import socketIOClient from "socket.io-client";
 export default function Home() {
   const onChange = useCallback((value, changeValue) => {
@@ -14,31 +14,35 @@ export default function Home() {
     console.log(changeValue);
   },[]);
 const SOCKET_SERVER_URL = "http://localhost:4000";
-const socketRef = useRef();
+const [socket, setSocket] = useState(null);
+
+useEffect(() => {
+  setSocket(socketIOClient(SOCKET_SERVER_URL));
+}, []);
+
+useEffect(() => {
+  if (!socket) return;
+
+  socket.on("connect", () => {
+    console.log("connected");
+  });
+  socket.on('disconnect', () => {
+    console.log("disconnected");
+  });
+}, [socket]);
+
 const handleCreate = () => {
-  const newRoomId = socketRef.id;
-  socketRef.current.emit("roomAllot", newRoomId);
+  const newRoomId = socket.id;
+  socket.emit("roomAllot", newRoomId);
   console.log("Your room id:", newRoomId);
   navigator.clipboard.writeText(newRoomId);
 }
 const handleJoin = (e) => {
   e.preventDefault();
   const roomId = e.target.roomid.value;
-  socketRef.current.emit("roomAllot", roomId);
+  socket.emit("roomAllot", roomId);
   roomId = "";
 }
-useEffect(() => {
-  socketRef.current = socketIOClient(SOCKET_SERVER_URL);
-  socketRef.current.on("connect", () => {
-    console.log("Connected to server");
-  });
-  socketRef.current.on("disconnect", () => {
-    console.log("Disconnected from server");
-  });
-  return () => {
-    socketRef.current.disconnect();
-  };
-}, []);
   return (
     <div>
       <Head>
