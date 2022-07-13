@@ -14,3 +14,10 @@ a {
 * {
   box-sizing: border-box;
 }
+
+.button-row {
+  background: purple;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
