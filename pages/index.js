@@ -16,8 +16,10 @@ export default function Home() {
 const SOCKET_SERVER_URL = "http://localhost:4000";
 const socketRef = useRef();
 const handleCreate = () => {
-  socketRef.current.emit("roomAllot", socketRef.id);
-  console.log("Your room id:", socketRef.id);
+  const newRoomId = socketRef.id;
+  socketRef.current.emit("roomAllot", newRoomId);
+  console.log("Your room id:", newRoomId);
+  navigator.clipboard.writeText(newRoomId);
 }
 const handleJoin = (e) => {
   e.preventDefault();
