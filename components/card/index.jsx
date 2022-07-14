@@ -1,7 +1,7 @@
 export default function Card({ name, username, photo }) {
     return (
       <div
-        className={`rounded-lg dark:bg-gray-900 border font-mono border-neutral-400  shadow-xl p-6 w-full`}
+        className={`rounded-lg bg-white dark:bg-gray-900 border font-mono border-neutral-400  shadow-xl p-6 w-full`}
       >
         <div className="md:flex justify-between">
           <div className="flex">

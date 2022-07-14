@@ -61,7 +61,19 @@ export default function Home() {
 
   return (
     <div className="w-full min-h-[100vh] dark:bg-neutral-900 overflow-y-auto">
-      <div className="w-full p-4 pt-24 text-center mx-auto">
+      <Image
+        src="/background.png"
+        width={1980}
+        height={1080}
+        alt="Photo by  Augustyns"
+        layout="fill"
+        style={{
+          zIndex: 2,
+          opacity: "20%",
+          mixBlendMode: "multiply",
+        }}
+      />
+      <div className="w-full p-4 pt-24 text-center mx-auto relative z-10">
         <h1 className="text-5xl font-bold dark:text-white mt-20 font-mono">
           Prepare for Interviews with Your Friends.
         </h1>
@@ -94,7 +106,7 @@ export default function Home() {
       </div>
       <section
         id="cards"
-        className="mt-16 px-12 grid grid-cols-2 gap-8 md:grid-cols-4 pb-10"
+        className="mt-16 px-12 grid grid-cols-2 gap-8 md:grid-cols-4 pb-10 relative z-10"
       >
         {CARDS.map((card) => (
           <Card key={card.id} {...card} />
