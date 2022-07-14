@@ -60,8 +60,8 @@ export default function Home() {
   ];
 
   return (
-    <div className="w-full h-full dark:bg-neutral-900">
-      <div className="w-full p-4 text-center mx-auto">
+    <div className="w-full min-h-[100vh] dark:bg-neutral-900 overflow-y-auto">
+      <div className="w-full p-4 pt-24 text-center mx-auto">
         <h1 className="text-5xl font-bold dark:text-white mt-20 font-mono">
           Prepare for Interviews with Your Friends.
         </h1>
