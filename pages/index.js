@@ -67,6 +67,8 @@ export default function Home() {
         height={1080}
         alt="Photo by  Augustyns"
         layout="fill"
+        objectFit="cover"
+        objectPosition="center"
         style={{
           zIndex: 2,
           opacity: "20%",
