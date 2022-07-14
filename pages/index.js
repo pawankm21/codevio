@@ -5,15 +5,16 @@ import PrimaryButton from "../components/primary-button";
 import { useEffect, useState, useRef } from "react";
 import socketIOClient from "socket.io-client";
 export default function Home() {
-  const [socket, setSocket] = useState(null);
+  //const [socket, setSocket] = useState(null);
+  let socket;
   const roomRef = useRef();
   useEffect(() => {
     socketInitializer();
   }, []);
 
   const socketInitializer = async () => {
-    await fetch('http://localhost:3000/api/socket');
-    setSocket(socketIOClient());
+    await fetch('/api/socket');
+    socket = socketIOClient();
 
     socket.on("connect", () => {
       console.log("connected");
@@ -22,17 +23,6 @@ export default function Home() {
       console.log("disconnected");
     });
   }
-
-  useEffect(() => {
-    if (!socket) return;
-
-    socket.on("connect", () => {
-      console.log("connected");
-    });
-    socket.on("disconnect", () => {
-      console.log("disconnected");
-    });
-  }, [socket]);
 
   const handleCreate = () => {
     const newRoomId = socket.id;
