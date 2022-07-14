@@ -5,7 +5,7 @@ import Navbar from "../components/navbar";
 import Footer from "../components/footer";
 export default function BaseLayout({children}) {
   return (
-    <div className={`${styles.container}`} id="container">
+    <div className={styles.container} id="container">
       <Head>
         <title>Codevio | Collaborate</title>
         <meta
