@@ -5,12 +5,23 @@ import PrimaryButton from "../components/primary-button";
 import { useEffect, useState, useRef } from "react";
 import socketIOClient from "socket.io-client";
 export default function Home() {
-  const SOCKET_SERVER_URL = "http://localhost:4000";
   const [socket, setSocket] = useState(null);
   const roomRef = useRef();
   useEffect(() => {
-    setSocket(socketIOClient(SOCKET_SERVER_URL));
+    socketInitializer();
   }, []);
+
+  const socketInitializer = async () => {
+    await fetch('http://localhost:3000/api/socket');
+    setSocket(socketIOClient());
+
+    socket.on("connect", () => {
+      console.log("connected");
+    });
+    socket.on("disconnect", () => {
+      console.log("disconnected");
+    });
+  }
 
   useEffect(() => {
     if (!socket) return;
