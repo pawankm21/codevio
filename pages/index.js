@@ -1,80 +1,40 @@
-
-import Head from 'next/head'
-import Image from 'next/image'
-import styles from '../styles/Home.module.css'
-import CodeMirror from "@uiw/react-codemirror";
-import { cpp } from '@codemirror/lang-cpp';
-import { python } from '@codemirror/lang-python';
-import { java } from '@codemirror/lang-java';
-import { sublime } from '@uiw/codemirror-theme-sublime';
-import { useEffect, useState, useCallback } from 'react';
-import socketIOClient from "socket.io-client";
-export default function Home() {
-  const onChange = useCallback((value, changeValue) => {
-    console.log(value);
-    console.log(changeValue);
-  },[]);
-const SOCKET_SERVER_URL = "http://localhost:4000";
-const [socket, setSocket] = useState(null);
-
-useEffect(() => {
-  setSocket(socketIOClient(SOCKET_SERVER_URL));
-}, []);
-
-useEffect(() => {
-  if (!socket) return;
-
-  socket.on("connect", () => {
-    console.log("connected");
-  });
-  socket.on('disconnect', () => {
-    console.log("disconnected");
-  });
-}, [socket]);
-
-const handleCreate = () => {
-  const newRoomId = socket.id;
-  socket.emit("roomAllot", newRoomId);
-  console.log("Your room id:", newRoomId);
-  navigator.clipboard.writeText(newRoomId);
-}
-const handleJoin = (e) => {
-  e.preventDefault();
-  const roomId = e.target.roomid.value;
-  socket.emit("roomAllot", roomId);
-  roomId = "";
-}
-  return (
-    <div>
-      <Head>
-        <title>Codevio</title>
-        <meta name="description" content="" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-
-      <main id="main">
-        <div className="button-row">
-          <input type="button" value="Create Room" onClick={handleCreate} />
-          <form onSubmit={handleJoin}>
-            <input id="roomid" type="text" placeholder="Enter RoomId" />
-            <button>Join Room </button>
-          </form>
-        </div>
-        <CodeMirror
-          value="console.log('hello world!');"
-          height="100vh"
-          width="100vw"
-          theme={sublime}
-          extensions={[java(), cpp(), python()]}
-          onChange={onChange}
-        />
-      </main>
-
+import Head from "next/head";
+import Image from "next/image";
 import Card from "../components/card";
 import PrimaryButton from "../components/primary-button";
-import Search from "../components/search";
-
+import { useEffect, useState, useRef } from "react";
+import socketIOClient from "socket.io-client";
 export default function Home() {
+  const SOCKET_SERVER_URL = "http://localhost:4000";
+  const [socket, setSocket] = useState(null);
+  const roomRef = useRef();
+  useEffect(() => {
+    setSocket(socketIOClient(SOCKET_SERVER_URL));
+  }, []);
+
+  useEffect(() => {
+    if (!socket) return;
+
+    socket.on("connect", () => {
+      console.log("connected");
+    });
+    socket.on("disconnect", () => {
+      console.log("disconnected");
+    });
+  }, [socket]);
+
+  const handleCreate = () => {
+    const newRoomId = socket.id;
+    socket.emit("roomAllot", newRoomId);
+    console.log("Your room id:", newRoomId);
+    navigator.clipboard.writeText(newRoomId);
+  };
+  const handleJoin = (roomRef) => {
+    const roomId = roomRef.current.value;
+    socket.emit("roomAllot", roomId);
+    roomId = "";
+  };
+
   const CARDS = [
     {
       id: 1,
@@ -105,10 +65,31 @@ export default function Home() {
         <h1 className="text-5xl font-bold dark:text-white mt-20 font-mono">
           Prepare for Interviews with Your Friends.
         </h1>
-        <div className="md:flex gap-8 w-1/2 mx-auto m-10  place-items-center justify-around text-neutral-100">
-          <Search />
+        <div className="md:flex gap-8 w-2/3 mx-auto m-10  place-items-center justify-around text-neutral-100">
+          <PrimaryButton
+            title="Create Room"
+            className="w-1/2"
+            onClick={handleCreate}
+          />
           <div className="md:m-0 m-5">Or</div>
-          <PrimaryButton title="Create Room" />
+          <div className="w-full flex place-items-center gap-4">
+            <div className="rounded-lg bg-black  shadow-blue-900">
+              <input
+                className="w-full outline-none rounded-lg py-4 px-8 text-lg font-mono hover:shadow-md
+      transition-all duration-100 ease-in-out hover:shadow-blue-400  text-neutral-900 shadow-blue-400 shadow-lg "
+                type="text"
+                placeholder="Enter Room ID"
+                ref={roomRef}
+              />
+            </div>
+            <PrimaryButton
+              title="Join Room"
+              className="w-1/2"
+              onClick={() => {
+                handleJoin(roomRef);
+              }}
+            />
+          </div>
         </div>
       </div>
       <section
