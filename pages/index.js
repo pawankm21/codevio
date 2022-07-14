@@ -71,11 +71,10 @@ export default function Home() {
         objectPosition="center"
         style={{
           zIndex: 2,
-          opacity: "20%",
-          mixBlendMode: "multiply",
+          opacity: "30%",
         }}
       />
-      <div className="w-full p-4 pt-24 text-center mx-auto relative z-10">
+      <div className="w-full p-4 text-center mx-auto relative z-10">
         <h1 className="text-5xl font-bold dark:text-white mt-20 font-mono">
           Prepare for Interviews with Your Friends.
         </h1>
