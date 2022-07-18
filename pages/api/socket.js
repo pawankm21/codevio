@@ -1,26 +1,32 @@
 import { Server } from 'socket.io';
 
 const SocketHandler = (req, res) => {
-    let io;
     if(res.socket.server.io) {
         console.log('Socket is already running');
-        io = res.socket.server.io;
     } else {
         console.log('Socket is initializing');
-        io = new Server(res.socket.server);
+        const io = new Server(res.socket.server);
         res.socket.server.io = io;
-    }
-    io.on("connection", (socket) => {
-        console.log("New client connected", socket.id);
-        socket.on("disconnect", () => {
-            console.log("Client disconnected");
-        });
 
-        socket.on("roomAllot", (roomId) => {
-            console.log("roomAllot", roomId);
-            socket.join(roomId);
+        io.on("connection", (socket) => {
+            let currRoomId;
+            console.log("New client connected", socket.id);
+
+            socket.on("roomAllot", (roomId) => {
+                console.log("roomAllot", roomId);
+                socket.join(roomId);
+                currRoomId = roomId;
+            });
+
+            socket.on("msg", (msg) => {
+                io.in(currRoomId).emit("msg", msg);
+            });
+
+            socket.on("disconnect", () => {
+                console.log("Client disconnected");
+            });
         });
-    });
+    }
 
     res.end();
 }
