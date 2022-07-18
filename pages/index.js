@@ -1,28 +1,28 @@
 import Head from "next/head";
+import Link from 'next/link';
 import Image from "next/image";
 import Card from "../components/card";
 import PrimaryButton from "../components/primary-button";
-import { useEffect, useState, useRef } from "react";
-import socketIOClient from "socket.io-client";
+import { useEffect, useState, useRef, useContext } from "react";
+import { SocketContext } from "../context/socket-context";
 export default function Home() {
-  //const [socket, setSocket] = useState(null);
-  let socket;
+  const socket = useContext(SocketContext);
   const roomRef = useRef();
-  useEffect(() => {
-    socketInitializer();
-  }, []);
+  // useEffect(() => {
+  //   socketInitializer();
+  // }, []);
 
-  const socketInitializer = async () => {
-    await fetch('/api/socket');
-    socket = socketIOClient();
+  // const socketInitializer = async () => {
+  //   await fetch('/api/socket');
+  //   socket = socketIOClient();
 
-    socket.on("connect", () => {
-      console.log("connected");
-    });
-    socket.on("disconnect", () => {
-      console.log("disconnected");
-    });
-  }
+  //   socket.on("connect", () => {
+  //     console.log("connected");
+  //   });
+  //   socket.on("disconnect", () => {
+  //     console.log("disconnected");
+  //   });
+  // }
 
   const handleCreate = () => {
     const newRoomId = socket.id;
@@ -80,11 +80,13 @@ export default function Home() {
           Prepare for Interviews with Your Friends.
         </h1>
         <div className="md:flex gap-8 w-2/3 mx-auto m-10  place-items-center justify-around text-neutral-100">
-          <PrimaryButton
-            title="Create Room"
-            className="w-1/2"
-            onClick={handleCreate}
-          />
+          <Link href="/room">
+            <PrimaryButton
+              title="Create Room"
+              className="w-1/2"
+              onClick={handleCreate}
+            />
+          </Link>
           <div className="md:m-0 m-5">Or</div>
           <div className="w-full flex place-items-center gap-4">
             <div className="rounded-lg bg-black  shadow-blue-900">
@@ -96,13 +98,15 @@ export default function Home() {
                 ref={roomRef}
               />
             </div>
-            <PrimaryButton
-              title="Join Room"
-              className="w-1/2"
-              onClick={() => {
-                handleJoin(roomRef);
-              }}
-            />
+            <Link href="/room">
+              <PrimaryButton
+                title="Join Room"
+                className="w-1/2"
+                onClick={() => {
+                  handleJoin(roomRef);
+                }}
+              />
+            </Link>
           </div>
         </div>
       </div>
