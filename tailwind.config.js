@@ -10,5 +10,7 @@ module.exports = {
       mono: ["'Space Mono'", "monospace"],
     },
   },
-  plugins: [],
+  plugins: [
+    require('tailwind-scrollbar-hide'),
+  ],
 };

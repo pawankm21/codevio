@@ -22,5 +22,10 @@ export default function Editor() {
       setContainer(editor.current);
     }
   }, [editor.current]);
-  return <div ref={editor} />;
+  return (
+    <div>
+      <div ref={editor} />
+     
+    </div>
+  );
 }
