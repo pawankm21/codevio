@@ -34,8 +34,8 @@ export default function Room() {
   return (
     <div className="w-full h-full dark:bg-neutral-900 pb-16 relative">
       <div className="grid md:grid-cols-8 divide-x divide-neutral-300 h-full ">
-        <div className="col-span-3 h-[96vh] overflow-y-scroll">
-          <div className="mt-10 p-8 w-full ">
+        <div className="col-span-3 h-[96vh] overflow-y-scroll scrollbar-hide">
+          <div className="mt-10 p-8 w-full  ">
             <Question {...QUESTIONS[0]} />
           </div>
         </div>
