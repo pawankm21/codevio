@@ -1,13 +1,13 @@
-import Head from "next/head";
-import Link from 'next/link';
 import Image from "next/image";
 import Card from "../components/card";
 import PrimaryButton from "../components/primary-button";
-import { useEffect, useState, useRef, useContext } from "react";
+import {  useRef, useContext } from "react";
 import { SocketContext } from "../context/socket-context";
+import { useRouter } from 'next/router';
 export default function Home() {
   const socket = useContext(SocketContext);
   const roomRef = useRef();
+  const router=useRouter();
   // useEffect(() => {
   //   socketInitializer();
   // }, []);
@@ -29,11 +29,12 @@ export default function Home() {
     socket.emit("roomAllot", newRoomId);
     console.log("Your room id:", newRoomId);
     navigator.clipboard.writeText(newRoomId);
+    router.push(`/rooms/${newRoomId}`);
   };
   const handleJoin = (roomRef) => {
     const roomId = roomRef.current.value;
     socket.emit("roomAllot", roomId);
-    roomId = "";
+    router.push(`/rooms/${roomId}`);
   };
 
   const CARDS = [
@@ -80,13 +81,11 @@ export default function Home() {
           Prepare for Interviews with Your Friends.
         </h1>
         <div className="md:flex gap-8 w-2/3 mx-auto m-10  place-items-center justify-around text-neutral-100">
-          <Link href="/room">
             <PrimaryButton
               title="Create Room"
               className="w-1/2"
               onClick={handleCreate}
             />
-          </Link>
           <div className="md:m-0 m-5">Or</div>
           <div className="w-full flex place-items-center gap-4">
             <div className="rounded-lg bg-black  shadow-blue-900">
@@ -98,7 +97,6 @@ export default function Home() {
                 ref={roomRef}
               />
             </div>
-            <Link href="/room">
               <PrimaryButton
                 title="Join Room"
                 className="w-1/2"
@@ -106,7 +104,6 @@ export default function Home() {
                   handleJoin(roomRef);
                 }}
               />
-            </Link>
           </div>
         </div>
       </div>

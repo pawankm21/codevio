@@ -1,6 +1,6 @@
 import React from "react";
 import Head from "next/head";
-import styles from "./base.module.css";
+import styles from "../styles/base.module.css";
 import Navbar from "../components/navbar";
 import Footer from "../components/footer";
 export default function BaseLayout({children}) {

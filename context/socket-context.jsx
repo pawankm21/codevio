@@ -5,11 +5,12 @@ const SocketContext = createContext();
 
 function SocketProvider({ children }) {
     const [socket, setSocket] = useState(null);
-    const socketInitializer = async () => {
-        await fetch('/api/socket');
-        setSocket(socketIOClient());
-    }
+
     useEffect(() => {
+        const socketInitializer = async () => {
+            await fetch('/api/socket');
+            setSocket(socketIOClient());
+        }
         socketInitializer();
     }, []);
     return (
