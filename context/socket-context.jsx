@@ -7,11 +7,13 @@ function SocketProvider({ children }) {
     const [socket, setSocket] = useState(null);
 
     useEffect(() => {
-        const socketInitializer = async () => {
-            await fetch('/api/socket');
-            setSocket(socketIOClient());
+        if (socket === null) {
+            const socketInitializer = async () => {
+                await fetch('/api/socket');
+                setSocket(socketIOClient());
+            }
+            socketInitializer();
         }
-        socketInitializer();
     }, []);
     return (
         <SocketContext.Provider value={socket}>

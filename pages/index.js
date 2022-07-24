@@ -34,7 +34,7 @@ export default function Home() {
   const handleJoin = (roomRef) => {
     const roomId = roomRef.current.value;
     socket.emit("roomAllot", roomId);
-    router.push(`/rooms/${roomId}`);
+    router.push(`/rooms/${roomId}`)
   };
 
   const CARDS = [

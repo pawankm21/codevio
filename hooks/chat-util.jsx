@@ -13,7 +13,7 @@ const useChat = () => {
             };
             setMessages((messages) => [...messages, incomingMessage]);
         });
-    }, []);
+    }, [socket]);
 
     const sendMessage = (messageBody) => {
         socket.emit('msg', {
