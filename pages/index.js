@@ -4,6 +4,10 @@ import PrimaryButton from "../components/primary-button";
 import {  useRef, useContext } from "react";
 import { SocketContext } from "../context/socket-context";
 import { useRouter } from 'next/router';
+import toast, { Toaster } from "react-hot-toast";
+const notify = (message) => {
+  return toast(message);
+}
 export default function Home() {
   const socket = useContext(SocketContext);
   const roomRef = useRef();
@@ -29,7 +33,7 @@ export default function Home() {
     socket.emit("roomAllot", newRoomId);
     console.log("Your room id:", newRoomId);
     navigator.clipboard.writeText(newRoomId);
-    router.push(`/rooms/${newRoomId}`);
+    notify("Your room id has been copied to clipboard");
   };
   const handleJoin = (roomRef) => {
     const roomId = roomRef.current.value;
@@ -76,6 +80,7 @@ export default function Home() {
           opacity: "30%",
         }}
       />
+      <Toaster/>
       <div className="w-full p-4 text-center mx-auto relative z-10">
         <h1 className="text-5xl font-bold dark:text-white mt-20 font-mono">
           Prepare for Interviews with Your Friends.

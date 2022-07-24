@@ -6,6 +6,7 @@ const useChat = () => {
     const [messages, setMessages] = useState([]);
 
     useEffect(() => {
+        socket.open();
         socket.on('msg', (message) => {
             const incomingMessage = {
                 ...message,
@@ -13,6 +14,10 @@ const useChat = () => {
             };
             setMessages((messages) => [...messages, incomingMessage]);
         });
+        return () => {
+            socket.close();
+            console.log("socket closed");
+        }
     }, [socket]);
 
     const sendMessage = (messageBody) => {

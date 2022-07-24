@@ -2,7 +2,20 @@ import Editor from "../../components/room/code-editor";
 import Question from "../../components/room/question";
 import Chat from "../../components/room/chat";
 import Console from "../../components/room/console";
+import { useRouter } from "next/router";
+import { useContext, useEffect } from "react";
+import { SocketContext } from "../../context/socket-context";
 export default function Room() {
+  const socket = useContext(SocketContext);
+  const router = useRouter()
+  const { roomId
+  } = router.query;
+  useEffect(() => {
+    if (roomId != null && socket != null) {
+      console.log("Entered via url");
+      socket.emit("roomAllot", roomId);
+    }
+  }, [roomId])
   const QUESTIONS = [
     {
       id: 1,
@@ -31,25 +44,28 @@ export default function Room() {
       ],
     },
   ];
-  return (
-    <div className="w-full h-full dark:bg-neutral-900 pb-16 relative">
-      <div className="grid md:grid-cols-8 divide-x divide-neutral-300 h-full ">
-        <div className="col-span-3 h-[96vh] overflow-y-scroll scrollbar-hide">
-          <div className="mt-10 p-8 w-full  ">
-            <Question {...QUESTIONS[0]} />
+  return <>
+
+
+    {socket && roomId ?
+      (<div className="w-full h-full dark:bg-neutral-900 pb-16 relative" >
+        <div className="grid md:grid-cols-8 divide-x divide-neutral-300 h-full ">
+          <div className="col-span-3 h-[96vh] overflow-y-scroll scrollbar-hide">
+            <div className="mt-10 p-8 w-full  ">
+              <Question {...QUESTIONS[0]} />
+            </div>
+          </div>
+          <div className=" col-span-3 w-full h-[96vh] pt-4 overflow-y-auto">
+            <Editor />
+          </div>{" "}
+          <div className="flex flex-col justify-end col-span-2 my-2 h-[96vh]">
+            <Chat />
           </div>
         </div>
-        <div className=" col-span-3 w-full h-[96vh] pt-4 overflow-y-auto">
-          <Editor />
-        </div>{" "}
-        <div className="flex flex-col justify-end col-span-2 my-2 h-[96vh]">
-          <Chat />
+        <div className="absolute w-full">
+          <Console />
         </div>
-      </div>
-      <div className="absolute w-full">
-      <Console />
-      </div>
- 
-    </div>
-  );
+
+      </div>)
+      : null}</>
 }
