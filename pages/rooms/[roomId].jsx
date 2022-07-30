@@ -5,17 +5,22 @@ import Console from "../../components/room/console";
 import { useRouter } from "next/router";
 import { useContext, useEffect } from "react";
 import { SocketContext } from "../../context/socket-context";
+import toast, { Toaster } from "react-hot-toast";
+const notify = (message) => {
+  return toast(message);
+}
 export default function Room() {
   const socket = useContext(SocketContext);
   const router = useRouter()
   const { roomId
   } = router.query;
   useEffect(() => {
-    if (roomId != null && socket != null) {
-      console.log("Entered via url");
-      socket.emit("roomAllot", roomId);
+    if (socket) {
+      socket.emit('roomAllot', roomId);
+      notify("Joined Room" + roomId);
     }
-  }, [roomId])
+    
+  },[roomId,socket])
   const QUESTIONS = [
     {
       id: 1,

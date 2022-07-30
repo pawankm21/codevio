@@ -27,9 +27,6 @@ export default function Console() {
       </div>
       <div className="w-full flex place-items-center p-4 text-neutral-300-5 border-t border-neutral-400 justify-center gap-4 "  >
         <button className="dark:bg-blue-900 bg-blue-400 p-2 rounded active:shadow-none shadow-blue-200 shadow-sm  dark:text-white">
-          Input Custom Testcases
-        </button>
-        <button className="dark:bg-blue-900 bg-blue-400 p-2 rounded active:shadow-none shadow-blue-200 shadow-sm  dark:text-white">
           Run
         </button>
         <button className="dark:bg-blue-900 bg-blue-400 p-2 rounded active:shadow-none shadow-blue-200 shadow-sm  dark:text-white">

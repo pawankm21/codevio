@@ -35,7 +35,7 @@ export default function Chat() {
                             className={`${message.isOwner ? "bg-[#0091EA] mr-auto" : "bg-[#648e35] ml-auto"} m-[1em] py-[0.5em] px-[1.5em] rounded-[20px] text-white break-words max-w-[65%] w-fit`}
                         >
                             <span>{message.body}</span>
-                            <p className="text-xs text-blue-900"></p>
+                            <p className="text-xs text-blue-900">{message.timeStamp}</p>
                         </li>
                     ))}
                 </ol>
